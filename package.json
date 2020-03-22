@@ -1,0 +1,23 @@
+{
+  "name": "lol-rs",
+  "description": "API key needs to be regenerated daily.",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nawgooyin/lol-rs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nawgooyin/lol-rs/issues"
+  },
+  "homepage": "https://github.com/nawgooyin/lol-rs#readme"
+}

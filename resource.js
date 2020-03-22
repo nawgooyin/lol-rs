@@ -1,8 +1,12 @@
-const getSummonerIdEndPoint = 'https://na1.api.riotgames.com/tft/summoner/v1/summoners/by-name';
-const getSummonerInfoEndPoint = 'https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner';
-const apiKey = 'api_key=[insert key here]';
+const https = 'https://';
+const getSummonerIdEndPoint = '.api.riotgames.com/tft/summoner/v1/summoners/by-name';
+const getSummonerInfoEndPoint = '.api.riotgames.com/lol/league/v4/entries/by-summoner';
+const getSummonerMatchHistoryEndPoint = '.api.riotgames.com/lol/match/v4/matchlists/by-account';
+const getSummonerMasteryListEndPoint = '.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner';
 
-module.exports = {getSummonerIdEndPoint: getSummonerIdEndPoint,
+module.exports = {https: https,
+                  getSummonerIdEndPoint: getSummonerIdEndPoint,
                   getSummonerInfoEndPoint: getSummonerInfoEndPoint,
-                  apiKey: apiKey
+                  getSummonerMatchHistoryEndPoint: getSummonerMatchHistoryEndPoint,
+                  getSummonerMasteryListEndPoint: getSummonerMasteryListEndPoint
 };

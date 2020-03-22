@@ -1,8 +1,9 @@
 const resource = require('../resource');
+const properties = require('../properties');
 const https = require('https');
 
-function getEncryptedUser(name, callback) {
-    var getSummonerInfo = https.get(`${resource.getSummonerIdEndPoint}/${name}?${resource.apiKey}` , (res) => {
+function getEncryptedUser(name, server, callback) {
+    var getSummonerInfo = https.get(`${resource.https}${server}${resource.getSummonerIdEndPoint}/${name}?${properties.apiKey}` , (res) => {
         if(res.statusCode > 200) {
             res.send(`Status Code: ${res.statusCode} \n Status Message: ${res.statusMessage}`);
         }

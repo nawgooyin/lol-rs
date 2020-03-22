@@ -5,6 +5,4 @@ const routers = require('./routes/summoner.js');
 
 app.use(routers);
 
-app.listen(port ,() => {
-    console.log(`App Started on ${port}`);
-});
+app.listen(port);

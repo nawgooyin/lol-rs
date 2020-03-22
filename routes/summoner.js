@@ -82,4 +82,26 @@ routers.get('/lol/api/getChampionMasteryList?:summonerName', (req, res) => {
     });
 });
 
+routers.get('/lol/api/getSummonerScore?:summonerName', (req, res) => {
+    var summonerName = req.query.summonerName;
+    var server = req.query.server;
+
+    summoner.getEncryptedUser(summonerName, server, (summoner) => {
+        var getSummonerInfo = https.get(`${resource.https}${server}${resource.getSummonerScoreEndPoint}/${summoner.id}?${properties.apiKey}` , (resp) => {
+            if(resp.statusCode !== 200) {
+                res.send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
+            }
+
+            let result = '';
+            resp.on('data', (data) => {
+                result += JSON.parse(data);
+            }).on('end', () => {
+                res.send(result);
+            });
+        });
+
+        getSummonerInfo.end();
+    });
+});
+
 module.exports = routers;

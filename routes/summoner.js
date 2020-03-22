@@ -26,7 +26,6 @@ routers.get('/lol/api/getSummonerInfo?:summonerName', (req, res) => {
     });
 });
 
-
 routers.get('/lol/api/getSummonerMatchHistory?:summonerName', (req, res) => { 
     var summonerName = req.query.summonerName;
     var server = req.query.server;
@@ -37,11 +36,18 @@ routers.get('/lol/api/getSummonerMatchHistory?:summonerName', (req, res) => {
                 res.send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
             }
     
+            let historyList = '';
             resp.on('data', (data) => {
-                var summoner = JSON.parse(data);
-                summoner.timestamp = new Date(summoner.timestamp);
-                res.send(summoner);
-            });
+                historyList += data;
+            }).on('end', () => {
+                const result = JSON.parse(historyList);
+                
+                for(i = 0; i < result.matches.length; i++) {
+                    result.matches[i].timestamp = new Date(result.matches[i].timestamp);
+                }
+
+                res.send(result);
+            });;
         });
 
         getSummonerInfo.end();
@@ -63,6 +69,11 @@ routers.get('/lol/api/getChampionMasteryList?:summonerName', (req, res) => {
                 masterylist += data;
             }).on('end', () => {
                 const result = JSON.parse(masterylist);
+
+                for(i = 0; i < result.length; i++) {
+                    result[i].lastPlayTime = new Date(result[i].lastPlayTime);
+                }
+
                 res.send(result);
             });
         });

@@ -3,9 +3,10 @@ const properties = require('../properties');
 const https = require('https');
 
 function getEncryptedUser(name, server, callback) {
-    var getSummonerInfo = https.get(`${resource.https}${server}${resource.getSummonerIdEndPoint}/${name}?${properties.apiKey}` , (res) => {
+    var getSummonerInfo = https.get(`${resource.https}${server}${resource.summonerIdEndPoint}/${name}?${properties.apiKey}` , (res) => {
         if(res.statusCode > 200) {
-            res.send(`Status Code: ${res.statusCode} \n Status Message: ${res.statusMessage}`);
+            //res.send(`Status Code: ${res.statusCode} \n Status Message: ${res.statusMessage}`);
+            return;
         }
 
         res.on('data', (data) => {

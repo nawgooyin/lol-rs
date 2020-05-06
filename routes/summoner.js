@@ -1,19 +1,20 @@
 const express = require('express');
-const routers = express.Router();
+const summoners = express.Router();
 const https = require('https');
 const resource = require('../resource');
 const properties = require('../properties');
 const summoner = require('../service/summoner.service');
-const champions = require('../assets/champions.json');
 
-routers.get('/lol/api/getSummonerInfo?:summonerName', (req, res) => {
+summoners.get('/lol/api/getSummonerInfo?:summonerName', (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+
     var summonerName = req.query.summonerName;
     var server = req.query.server;
 
     summoner.getEncryptedUser(summonerName, server, (summoner) => {
-        var getSummonerInfo = https.get(`${resource.https}${server}${resource.getSummonerInfoEndPoint}/${summoner.id}?${properties.apiKey}` , (resp) => {
+        var getSummonerInfo = https.get(`${resource.https}${server}${resource.summonerInfoEndPoint}/${summoner.id}?${properties.apiKey}` , (resp) => {
             if(resp.statusCode !== 200) {
-                res.send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
+                res.status(400).send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
             }
     
             resp.on('data', (data) => {
@@ -26,14 +27,17 @@ routers.get('/lol/api/getSummonerInfo?:summonerName', (req, res) => {
     });
 });
 
-routers.get('/lol/api/getSummonerMatchHistory?:summonerName', (req, res) => { 
+summoners.get('/lol/api/getSummonerMatchHistory?:summonerName', (req, res) => { 
+    res.set('Access-Control-Allow-Origin', '*');
+
     var summonerName = req.query.summonerName;
     var server = req.query.server;
 
     summoner.getEncryptedUser(summonerName, server, (summoner) => {
-        var getSummonerInfo = https.get(`${resource.https}${server}${resource.getSummonerMatchHistoryEndPoint}/${summoner.accountId}?${properties.apiKey}` , (resp) => {
+        var getMatchHistory = https.get(`${resource.https}${server}${resource.summonerMatchHistoryEndPoint}/${summoner.accountId}?${properties.apiKey}` , (resp) => {
             if(resp.statusCode !== 200) {
-                res.send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
+                res.status(400).send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
+                return;
             }
     
             let historyList = '';
@@ -50,18 +54,21 @@ routers.get('/lol/api/getSummonerMatchHistory?:summonerName', (req, res) => {
             });;
         });
 
-        getSummonerInfo.end();
+        getMatchHistory.end();
     });
 });
 
-routers.get('/lol/api/getChampionMasteryList?:summonerName', (req, res) => {
+summoners.get('/lol/api/getChampionMasteryList?:summonerName', (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+
     var summonerName = req.query.summonerName;
     var server = req.query.server;
 
     summoner.getEncryptedUser(summonerName, server, (summoner) => {
-        var getSummonerInfo = https.get(`${resource.https}${server}${resource.getSummonerMasteryListEndPoint}/${summoner.id}?${properties.apiKey}` , (resp) => {
+        var getMasterList = https.get(`${resource.https}${server}${resource.summonerMasteryListEndPoint}/${summoner.id}?${properties.apiKey}` , (resp) => {
             if(resp.statusCode !== 200) {
-                res.send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
+                res.status(400).send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
+                return;
             }
 
             let masterylist = '';
@@ -78,18 +85,21 @@ routers.get('/lol/api/getChampionMasteryList?:summonerName', (req, res) => {
             });
         });
 
-        getSummonerInfo.end();
+        getMasterList.end();
     });
 });
 
-routers.get('/lol/api/getSummonerScore?:summonerName', (req, res) => {
+summoners.get('/lol/api/getSummonerScore?:summonerName', (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    
     var summonerName = req.query.summonerName;
     var server = req.query.server;
 
     summoner.getEncryptedUser(summonerName, server, (summoner) => {
-        var getSummonerInfo = https.get(`${resource.https}${server}${resource.getSummonerScoreEndPoint}/${summoner.id}?${properties.apiKey}` , (resp) => {
+        var getSummonerScore = https.get(`${resource.https}${server}${resource.summonerScoreEndPoint}/${summoner.id}?${properties.apiKey}` , (resp) => {
             if(resp.statusCode !== 200) {
-                res.send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
+                res.status(400).send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
+                return;
             }
 
             let result = '';
@@ -100,8 +110,8 @@ routers.get('/lol/api/getSummonerScore?:summonerName', (req, res) => {
             });
         });
 
-        getSummonerInfo.end();
+        getSummonerScore.end();
     });
 });
 
-module.exports = routers;
+module.exports = summoners;

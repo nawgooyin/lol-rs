@@ -32,9 +32,11 @@ summoners.get('/lol/api/getSummonerMatchHistory?:summonerName', (req, res) => {
 
     var summonerName = req.query.summonerName;
     var server = req.query.server;
+    var endIndex = req.query.endIndex;
+    var beginIndex = req.query.beginIndex;
 
     summoner.getEncryptedUser(summonerName, server, (summoner) => {
-        var getMatchHistory = https.get(`${resource.https}${server}${resource.summonerMatchHistoryEndPoint}/${summoner.accountId}?${properties.apiKey}` , (resp) => {
+        var getMatchHistory = https.get(`${resource.https}${server}${resource.summonerMatchHistoryEndPoint}/${summoner.accountId}?endIndex=${endIndex}&beginIndex=${beginIndex}&${properties.apiKey}` , (resp) => {
             if(resp.statusCode !== 200) {
                 res.status(400).send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
                 return;

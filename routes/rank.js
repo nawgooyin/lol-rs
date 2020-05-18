@@ -9,18 +9,19 @@ ranks.get('/lol/api/getChallengerList?:queue', (req, res) => {
    
    var queue = req.query.queue;
    var server = req.query.server;
-   
    var getChallengerList = https.get(`${resource.https}${server}${resource.challengerListEndPoint}/${queue}?${properties.apiKey}` , (resp) => {
       if(resp.statusCode !== 200) {
           res.status(400).send(`Status Code: ${resp.statusCode} \n Status Message: ${resp.statusMessage}`);
           return;
       }
 
-      let result = '';
+      let result = [];
       resp.on('data', (data) => {
-          result += JSON.parse(data);
+          result.push(data);
       }).on('end', () => {
-          res.send(result);
+          let bufferConverter = Buffer.concat(result);
+          let JsonConverter = JSON.parse(bufferConverter);
+          res.send(JsonConverter);
       });
   });
 
